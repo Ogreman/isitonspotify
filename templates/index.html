@@ -18,6 +18,7 @@
 function handleForm(){
     if (!window.jQuery){
         $(function() {
+            $("#amt")[0].innerHTML="checking..."
             $.getJSON('http://ws.spotify.com/search/1/artist.json', {
                 q: $("#artistname").val()
             }, function(data) {
@@ -38,6 +39,7 @@ function handleForm(){
         artist = document.getElementById('artistname').value
         request.open('GET', 'http://ws.spotify.com/search/1/artist.json?q='+artist, true);
         exists = document.getElementById("amt");
+        exists.innerHTML="checking..."
 
         request.onload = function() {
           if (request.status >= 200 && request.status < 400){
