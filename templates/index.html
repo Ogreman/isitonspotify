@@ -1,0 +1,66 @@
+
+{% extends 'layout.html' %}
+{% block body %}
+<h1 id="exists" style="
+    position: fixed;
+    top: 40%;
+    left: 25%;
+    font-size: 63px;
+">
+<p>
+    <input placeholder="artist" type="text" id="artistname" onkeydown="if (event.keyCode == 13) document.getElementById('btnCheck').click()">
+    <button id="btnCheck" onclick="handleForm()" type="button">check</button></br>
+    <div id="amt" style="font-size: 130px;"></div>
+</p>
+</h1>
+
+<script type=text/javascript>
+function handleForm(){
+    if (!window.jQuery){
+        $(function() {
+            $.getJSON('http://ws.spotify.com/search/1/artist.json', {
+                q: $("#artistname").val()
+            }, function(data) {
+                if (data.error_message) {
+                    console.log(data.error_message);
+                } else {
+                    if (data.info.num_results > 0) {
+                        $("#amt")[0].innerHTML="YES!"
+                    } else {
+                        $("#amt")[0].innerHTML="NOPE!"
+                    }
+                }
+            });
+            return false;
+        });
+    } else {
+        request = new XMLHttpRequest;
+        artist = document.getElementById('artistname').value
+        request.open('GET', 'http://ws.spotify.com/search/1/artist.json?q='+artist, true);
+        exists = document.getElementById("amt");
+
+        request.onload = function() {
+          if (request.status >= 200 && request.status < 400){
+            data = JSON.parse(request.responseText);
+            if (data.error_message) {
+                console.log(data.error_message);
+            } else {
+                if (data.info.num_results > 0) {
+                    exists.innerHTML="YES!"
+                } else {
+                    exists.innerHTML="NOPE!"
+                }
+            }
+          } else {
+            console.log("request error");
+          }
+        };
+        request.onerror = function() {
+            console.log("connection error");
+        };
+        request.send();
+    }
+}
+</script>
+
+{% endblock %}
