@@ -28,10 +28,16 @@ def index():
 def api():
     artist = request.args.get('artist', '', type=str)
     response = requests.get(URL, params={ 'q': artist })
+    if response.status_code == requests.codes.ok:
+        check = response.json()['info']['num_results'] > 0 
+        success = True
+    else:
+        check = False
+        success = False
     return jsonify(
         {
-            "success": True,
-            "check": response.json()['info']['num_results'] > 0,
+            "success": success,
+            "check": check,
             "artist": artist,
         }
     )
