@@ -16,7 +16,7 @@
 
 <script type=text/javascript>
 function handleForm(){
-    if (!window.jQuery){
+    if (window.jQuery){
         $(function() {
             $("#amt")[0].innerHTML="checking..."
             $.getJSON('http://ws.spotify.com/search/1/artist.json', {
