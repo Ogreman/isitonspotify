@@ -14,7 +14,7 @@ TEMPLATE_DIR = Path(__file__).ancestor(1).child("templates")
 
 app = Flask(__name__, template_folder=TEMPLATE_DIR)
 
-URL = "http://ws.spotify.com/search/1/artist.json"
+URL = "https://ws.spotify.com/search/1/artist.json"
 
 @app.route('/')
 def index():
