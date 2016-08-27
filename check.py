@@ -14,7 +14,8 @@ TEMPLATE_DIR = Path(__file__).ancestor(1).child("templates")
 
 app = Flask(__name__, template_folder=TEMPLATE_DIR)
 
-URL = "https://ws.spotify.com/search/1/artist.json"
+URL = "https://api.spotify.com/v1/search"
+
 
 @app.route('/')
 def index():
@@ -27,9 +28,9 @@ def index():
 @app.route('/api/', methods=['GET'])
 def api():
     artist = request.args.get('artist', '', type=str)
-    response = requests.get(URL, params={ 'q': artist })
+    response = requests.get(URL, params={ 'q': artist, 'type': 'artist' })
     if response.status_code == requests.codes.ok:
-        check = response.json()['info']['num_results'] > 0
+        check = bool(response.json()['artists']['items'])
         success = True
     else:
         check = False
